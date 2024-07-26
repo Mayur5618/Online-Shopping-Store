@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.post-content p {
+    margin-bottom: 0.5rem;
+  }
+  
+  .post-content h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-family: sans-serif;
+    margin: 1.5rem 0;
+  }
+  
+  .post-content h2 {
+    font-size: 1.4rem;
+    font-family: sans-serif;
+    margin: 1.5rem 0;
+  }
+  
+  .post-content a {
+    color: rgb(73, 149, 199);
+    text-decoration: none;
+  }
+  
+  .post-content a:hover {
+    text-decoration: underline;
+  }
+  
+  .dark .post-content a {
+    color: red;
+  }
+
+  .photo-wrapper {
+    position: relative;
+  }
+  
+  .photo-container {
+    width: 100%; /* Define the width you want */
+    max-width: 500px; /* You can adjust this to your desired width */
+    margin: 0 auto; /* Center the image container */
+  }
+  
+  .fixed-photo .photo-container {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+  }
+  
+  .photo-container img {
+    width: 100%; /* Ensure the image takes up the full width of its container */
+  }
+  
+
+  /* cart */
+  .cart-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: red;
+    color: white;
+    /* border-radius: 50%; */
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .cart-icon-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .animate-count {
+    animation: grow-shrink 0.3s ease-in-out;
+  }
+  
+  @keyframes grow-shrink {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.5);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
