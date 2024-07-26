@@ -199,7 +199,7 @@ export default function ProductPage() {
         <h1 className="mt-5 mb-5 flex justify-center items-center text-2xl font-sans">
           See similar products
         </h1>
-        <div className="flex gap-3 flex-wrap mb-5">
+        <div className="flex gap-3 flex-wrap p-3 sm:p-0 mb-5">
           {recentProducts &&
             recentProducts.map((product) => (
               <ProductCard key={product._id} product={product} />
