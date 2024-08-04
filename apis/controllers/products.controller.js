@@ -5,7 +5,12 @@ export const createProduct = async (req, res, next) => {
   if (!req.user.isAdmin) {
     return next(errorHandler(200, req.user));
   }
-  if (!req.body.title || !req.body.content || !req.body.category ||!req.body.subCategory) {
+  if (
+    !req.body.title ||
+    !req.body.content ||
+    !req.body.category ||
+    !req.body.subCategory
+  ) {
     return next(errorHandler(400, "Please fill necessary field.."));
   }
   const slug = req.body.title
@@ -28,7 +33,7 @@ export const createProduct = async (req, res, next) => {
 };
 
 export const getProducts = async (req, res, next) => {
-  const startIndex = parseInt(req.query.startIndex) || 0; 
+  const startIndex = parseInt(req.query.startIndex) || 0;
   const limit = parseInt(req.query.limit) || 9;
   const sort = req.query.sort === "asc" ? 1 : -1;
 
@@ -40,8 +45,8 @@ export const getProducts = async (req, res, next) => {
       ...(req.query.productId && { _id: req.query.productId }),
       ...(req.query.searchTerm && {
         $or: [
-          { category: { $regex: req.query.searchTerm , $options: "i" }},
-          { subCategory: { $regex: req.query.searchTerm , $options: "i" }},
+          { category: { $regex: req.query.searchTerm, $options: "i" } },
+          { subCategory: { $regex: req.query.searchTerm, $options: "i" } },
         ],
       }),
     })
@@ -49,26 +54,28 @@ export const getProducts = async (req, res, next) => {
     .skip(startIndex)
     .limit(limit);
 
-    const totalProducts = await productModel.countDocuments();
+  const totalProducts = await productModel.countDocuments();
 
-    const today = new Date();
+  const today = new Date();
 
-    const oneMonthAgo = new Date(
-      today.getFullYear(),
-      today.getMonth() - 1,
-      today.getDate()
-    );
+  const oneMonthAgo = new Date(
+    today.getFullYear(),
+    today.getMonth() - 1,
+    today.getDate()
+  );
 
-    const lastMonthProducts = await productModel.countDocuments({
-      createdAt: { $gte: oneMonthAgo },
-    });
+  const lastMonthProducts = await productModel.countDocuments({
+    createdAt: { $gte: oneMonthAgo },
+  });
 
-    res.status(200).json({ products, totalProducts, lastMonthProducts });
+  res.status(200).json({ products, totalProducts, lastMonthProducts });
 };
 
 export const deleteProduct = async (req, res, next) => {
   if (!req.user.isAdmin) {
-    return next(errorHandler(403, "you are not allowed to delete this product"));
+    return next(
+      errorHandler(403, "you are not allowed to delete this product")
+    );
   }
   try {
     await productModel.findByIdAndDelete(req.query.productId);
@@ -78,47 +85,43 @@ export const deleteProduct = async (req, res, next) => {
   }
 };
 
-export const updateProduct = async (req,res,next)=>{
-  if(!req.user.isAdmin)
-  {
-    next(errorHandler(403,"You are not allowed to upadate this product"));
+export const updateProduct = async (req, res, next) => {
+  if (!req.user.isAdmin) {
+    next(errorHandler(403, "You are not allowed to upadate this product"));
   }
-  try{
-    const updatedProduct=await productModel.findByIdAndUpdate(req.query.productId,{
-      $set:{
-        title:req.body.title,
-        content:req.body.content,
-        productPhotoUrl:req.body.productPhotoUrl,
-        category:req.body.category,
-        subCategory:req.body.subCategory,
-        price:req.body.price
-      }
-    },{new:true});
-    if(updatedProduct)
-    {
+  try {
+    const updatedProduct = await productModel.findByIdAndUpdate(
+      req.query.productId,
+      {
+        $set: {
+          title: req.body.title,
+          content: req.body.content,
+          productPhotoUrl: req.body.productPhotoUrl,
+          category: req.body.category,
+          subCategory: req.body.subCategory,
+          price: req.body.price,
+        },
+      },
+      { new: true }
+    );
+    if (updatedProduct) {
       res.status(200).json(updatedProduct);
     }
-  }
-  catch(error)
-  {
+  } catch (error) {
     next(error);
   }
-}
+};
 
-export const getProduct = async (req,res,next)=>{
-  try{
-    const product=await productModel.findOne({slug:req.params.slug});
-    if(!product)
-    {
-      return next(errorHandler(404,"Product is not found.."));
+export const getProduct = async (req, res, next) => {
+  try {
+    const product = await productModel.findOne({ slug: req.params.slug });
+    if (!product) {
+      return next(errorHandler(404, "Product is not found.."));
     }
-    if(product)
-    {
+    if (product) {
       res.status(200).json(product);
     }
-  }
-  catch(error)
-  {
+  } catch (error) {
     next(error);
   }
-}
+};

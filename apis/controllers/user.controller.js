@@ -87,7 +87,7 @@ export const deleteUser = async (req, res, next) => {
 export const getUsers = async (req, res, next) => {
   const limit = parseInt(req.query.limit) || 9;
   const startIndex = parseInt(req.query.startIndex) || 0;
-  
+
   if (!req.user.isAdmin) {
     return next(errorHandler(403, "Unauthorized"));
   }

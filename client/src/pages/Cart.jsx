@@ -1,4 +1,4 @@
-import { Table } from "flowbite-react";
+import { Spinner, Table } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { FaTrash } from "react-icons/fa";
@@ -9,7 +9,9 @@ export default function Cart() {
   const [cartItems, setCartItems] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
   const { cart } = useSelector((state) => state.cart);
+  const { userData } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [initialLoading, setInitialLoading] = useState(true);
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('en-IN', {
@@ -20,7 +22,7 @@ export default function Cart() {
   const fetchCartItems = async () => {
     try {
       const res = await fetch("/api/cart/getCartItems");
-      if (res.status===404){
+      if (res.status === 404) {
         setCartItems([]);
         return;
       }
@@ -32,11 +34,15 @@ export default function Cart() {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setInitialLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchCartItems();
+    if (userData) {
+      fetchCartItems();
+    }
   }, [cart]);
 
   const handleDelete = async (cartItem) => {
@@ -50,7 +56,6 @@ export default function Cart() {
           prevItems.filter((item) => item._id !== cartItem._id)
         );
         dispatch(cartItemRemove(cartItem.quantity));
-
         setTotalPrice(totalPrice - cartItem.total);
       }
     } catch (error) {
@@ -67,9 +72,7 @@ export default function Cart() {
       });
       if (res.ok) {
         const data = await res.json();
-
         setTotalPrice((prev) => prev + parseInt(data.productId.price));
-
         setCartItems((prevItems) =>
           prevItems.map((item) =>
             item._id === cartItem._id
@@ -93,9 +96,7 @@ export default function Cart() {
       });
       if (res.ok) {
         const data = await res.json();
-
         setTotalPrice((prev) => prev - parseInt(data.productId.price));
-
         setCartItems((prevItems) =>
           prevItems.map((item) =>
             item._id === cartItem._id
@@ -110,34 +111,46 @@ export default function Cart() {
     }
   };
 
+  if (initialLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Spinner size="xl" />
+      </div>
+    );
+  }
+
+  if (cartItems && cartItems.length === 0) {
+    return (
+      <div>
+        <div className="md:w-[80%] md:mx-auto md:rounded-xl m-6 rounded-md shadow-lg dark:text-black dark:bg-white bg-gray-200 text-black">
+          <img
+            src="https://rukminim2.flixcart.com/www/800/800/promos/16/05/2019/d438a32e-765a-4d8b-b4a6-520b560971e8.png?q=90"
+            alt="imgcart"
+            className="w-60 h-56 mx-auto pt-5"
+          />
+          <p className="text-center text-lg text-gray-800 py-4 pb-2">
+            Your cart is empty!
+          </p>
+          <p className="text-center text-xs text-gray-800 pb-3">
+            Add items to it now.
+          </p>
+          <div className="flex justify-center items-center">
+            <Link to='/'>
+              <button className="bg-blue-600 px-16 text-white py-3 mb-7">
+                Shop now
+              </button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col xl:flex-row ">
       {/* cart */}
       <div className="flex-1 lg:min-w-[60%] md:p-9 ">
-        {cartItems && cartItems.length === 0 ? (
-          <div>
-            <div className="md:w-[80%] mx-auto md:rounded-xl shadow-lg  dark:text-black dark:bg-white bg-gray-200 text-black">
-              <img
-                src="https://rukminim2.flixcart.com/www/800/800/promos/16/05/2019/d438a32e-765a-4d8b-b4a6-520b560971e8.png?q=90"
-                alt="imgcart"
-                className="w-60 h-56 mx-auto pt-5"
-              />
-              <p className="text-center text-lg text-gray-800 py-4 pb-2">
-                Your cart is empty!
-              </p>
-              <p className="text-center text-xs text-gray-800 pb-3">
-                Add items to it now.
-              </p>
-              <div className="flex justify-center items-center">
-                <Link to='/'>
-                  <button className="bg-blue-600 px-16 text-white py-3 mb-7">
-                    Shop now
-                  </button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        ) : (
+        
           <div className=" md:rounded-xl shadow-lg md:bg-white bg-[rgb(16,23,42) dark:text-white md:dark:text-black">
             <h1 className="font-bold light:text-black text-3xl pb-2 p-8 pt-11">
               Shopping Cart
@@ -177,7 +190,7 @@ export default function Cart() {
                               </button>
                             ) : (
                               <button
-                                className="px-4 py-1 hover:text-black text-2xl bg-gray-300 rounded-md"
+                                className="px-4 pb-1 hover:text-black text-2xl bg-gray-300 rounded-md"
                                 onClick={() => handleDecrement(cartItem)}
                               >
                                 -
@@ -188,7 +201,7 @@ export default function Cart() {
                               {cartItem.quantity}
                             </h1>
                             <button
-                              className="px-3 py-1 hover:text-black text-2xl bg-gray-300 rounded-md"
+                              className="px-3 pb-1 hover:text-black text-2xl bg-gray-300 rounded-md"
                               onClick={() => handleIncrement(cartItem)}
                             >
                               +
@@ -208,7 +221,7 @@ export default function Cart() {
                     ))}
                 </Table.Body>
               </Table>
-              <div className="md:hidden bg-[rgb(16,23,42) mt-2">
+              <div className="sm:hidden bg-[rgb(16,23,42) mt-2">
                 {cartItems &&
                   cartItems.map((cartItem) => (
                     <div
@@ -224,16 +237,17 @@ export default function Cart() {
                         <div className="ml-4">
                           <Link
                             to={`/product/${cartItem.productId.slug}`}
-                            className="hover:underline text-xl font-medium text-black"
+                            className="hover:underline text-lg font-normal text-black"
                           >
                             {cartItem.productId.title}
                           </Link>
-                          <h1 className="font-bold text-2xl text-gray-800 mt-2">
+                          <h1 className="font-bold text-xl text-gray-800 mt-2">
                           ₹{cartItem.total && formatPrice(cartItem.total)}
                           </h1>
                           <div className="flex items-center gap-2 mt-2">
-                            <button
-                              className={`px-3 py-2 text-2xl bg-gray-300 rounded-md ${
+                            {cartItem.quantity === 1 ? (
+                              <button
+                              className={`px-3 py-2 text-xl bg-gray-300 rounded-md ${
                                 cartItem.quantity === 1
                                   ? "hover:text-red-500"
                                   : "hover:text-black"
@@ -243,13 +257,23 @@ export default function Cart() {
                                   ? handleDelete(cartItem)
                                   : handleDecrement(cartItem)
                               }
-                            >
-                              {cartItem.quantity === 1 ? (
-                                <FaTrash className="text-lg" />
+                            > <span><FaTrash className="text-lg"/></span> </button>
+                               
                               ) : (
-                                "-"
+                                <button
+                                className={`px-4 pb-1 text-2xl bg-gray-300 rounded-md ${
+                                  cartItem.quantity === 1
+                                    ? "hover:text-red-500"
+                                    : "hover:text-black"
+                                }`}
+                                onClick={() =>
+                                  cartItem.quantity === 1
+                                    ? handleDelete(cartItem)
+                                    : handleDecrement(cartItem)
+                                }
+                              > <span>-</span> </button>
+                                 
                               )}
-                            </button>
                             <h1 className="font-bold text-lg text-gray-600">
                               {cartItem.quantity}
                             </h1>
@@ -267,42 +291,41 @@ export default function Cart() {
               </div>
             </div>
           </div>
-        )}
       </div>
       {/* </div> */}
       {/* order detail */}
       {cartItems && cartItems.length !== 0 && (
-        <div className="flex-1 text- min-h-screen w-[90%] mx-auto   md:p-9">
+        <div className="flex-1 min-h-screen w-[90%] mx-auto   md:p-9">
           <div className=" md:rounded-xl rounded-md dark:text-black dark:bg-white bg-gray-white shadow-xl text-black">
-            <h1 className="text-2xl font-bold p-9 pb-0">PRICE DETAILS</h1>
+            <h1 className="text-2xl font-bold pl-5 md:pl-9 py-9  pb-0">PRICE DETAILS</h1>
             <div className="flex mt-3 justify-between border-b border-slate-200  w-full max-w-2xl text-xs"></div>
 
             <div className="flex items-center justify-between">
-              <h1 className="font-normal p-9 py-0 text-lg light:text-gray-300">
+              <h1 className="font-normal pl-5 md:pl-9 md:py-0 text-lg light:text-gray-300">
                 Price ({cart} items)
               </h1>
-              <h1 className="font-medium p-4 text-xl light:text-black">
+              <h1 className="font-medium p-4 md:pr-9 text-xl light:text-black">
               ₹{totalPrice && formatPrice(totalPrice)}
               </h1>
             </div>
             <div className="flex items-center justify-between">
-              <h1 className="font-normal p-9 py-0 text-lg light:text-gray-300">
+              <h1 className="font-normal pl-5 md:pl-9 md:py-0 text-lg light:text-gray-300">
                 Discount
               </h1>
-              <h1 className="font-medium p-4 text-xl light:text-black">₹0</h1>
+              <h1 className="font-medium p-4 md:pr-9 text-xl light:text-black">₹0</h1>
             </div>
             <div className="flex items-center justify-between">
-              <h1 className="font-normal p-9 py-0 text-lg light:text-gray-300">
+              <h1 className="font-normal pl-5 md:pl-9 md:py-0 text-lg light:text-gray-300">
                 Delivery Charges
               </h1>
-              <h1 className="font-medium p-4 text-xl light:text-black">₹0</h1>
+              <h1 className="font-medium p-4 text-xl md:pr-9 light:text-black">₹0</h1>
             </div>
             <div className="flex mt-3 justify-between border-b  border-slate-200 mx-4 max-w-2xl text-xs"></div>
             <div className="flex items-center justify-between">
-              <h1 className="font-extrabold p-9 py-6 text-lg light:text-black">
+              <h1 className="font-extrabold pl-5 md:pl-9 py-6 text-lg light:text-black">
                 Total Amount
               </h1>
-              <h1 className="font-extrabold p-4 text-2xl light:text-black">
+              <h1 className="font-extrabold md:pr-9 p-4 text-2xl light:text-black">
                 ₹{totalPrice && formatPrice(totalPrice)}
               </h1>
             </div>

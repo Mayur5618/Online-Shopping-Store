@@ -20,9 +20,6 @@ export default function Signup() {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
-    // const updatedFormData={...formData};
-    // updatedFormData[e.target.id]=e.target.value;
-    // setFormData(updatedFormData)
   };
 
   const handleSubmit = async (e) => {

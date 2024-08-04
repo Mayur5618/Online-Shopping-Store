@@ -6,31 +6,31 @@ const commentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    productId:{
+    productId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Products',
+      ref: "Products",
       required: true,
     },
-    likes:{
-        type:Array,
-        default:[]
+    likes: {
+      type: Array,
+      default: [],
     },
-    numberOfLikes:{
-        type:Number,
-        default:0,
+    numberOfLikes: {
+      type: Number,
+      default: 0,
     },
     userId: {
       type: String,
       required: true,
     },
-    star:{
-      type:Number,
-      required:true
-    }
+    star: {
+      type: Number,
+      required: true,
+    },
   },
   { timestamps: true }
 );
 
-const commentModel=mongoose.model("Comments",commentSchema);
+const commentModel = mongoose.model("Comments", commentSchema);
 
 export default commentModel;

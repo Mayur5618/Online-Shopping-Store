@@ -37,9 +37,9 @@
   }
   
   .photo-container {
-    width: 100%; /* Define the width you want */
-    max-width: 500px; /* You can adjust this to your desired width */
-    margin: 0 auto; /* Center the image container */
+    width: 100%; 
+    max-width: 500px; 
+    margin: 0 auto; 
   }
   
   .fixed-photo .photo-container {
@@ -51,7 +51,7 @@
   }
   
   .photo-container img {
-    width: 100%; /* Ensure the image takes up the full width of its container */
+    width: 100%; 
   }
   
 
@@ -62,7 +62,6 @@
     right: -10px;
     background-color: red;
     color: white;
-    /* border-radius: 50%; */
     font-size: 0.8rem;
     display: flex;
     justify-content: center;

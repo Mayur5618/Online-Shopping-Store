@@ -3,14 +3,14 @@ import productModel from "./product.model.js"; // Assuming you have a Product mo
 
 const cartSchema = new mongoose.Schema(
   {
-    userId:{
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
+      ref: "User",
+      required: true,
     },
     productId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Products',
+      ref: "Products",
       required: true,
     },
     quantity: {
@@ -33,7 +33,8 @@ cartSchema.pre("save", async function (next) {
       if (!product) {
         throw new Error("Product not found");
       }
-      cart.total = cart.quantity * parseInt(product.price.replace(/,/g,''),10);
+      cart.total =
+        cart.quantity * parseInt(product.price.replace(/,/g, ""), 10);
       next();
     } catch (error) {
       next(error);

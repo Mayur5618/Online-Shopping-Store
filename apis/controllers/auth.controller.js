@@ -51,16 +51,11 @@ export const signin = async (req, res, next) => {
     }
     const token = jwt.sign(
       { id: validUser._id, isAdmin: validUser.isAdmin },
-      process.env.JWT_SECRET,{expiresIn:"24h"}
+      process.env.JWT_SECRET,
+      { expiresIn: "24h" }
     );
 
     const { password: pass, ...rest } = validUser._doc;
-    //object destructuring syntax in JavaScript
-    // 1.Variable Renaming--> const { existingName: newName } = object;
-    // 2.Rest Syntax: The rest syntax (...) allows you to collect remaining properties into a new object
-    //                const { property1, ...rest } = object;
-    // 3.Default Values: You can provide default values for properties that might be undefined.
-    //                const { property = defaultValue } = object;
 
     res
       .status(200)
@@ -79,9 +74,13 @@ export const google = async (req, res, next) => {
   try {
     const user = await User.findOne({ email });
     if (user) {
-      const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.JWT_SECRET, {
-        expiresIn: "24h",
-      });
+      const token = jwt.sign(
+        { id: user._id, isAdmin: user.isAdmin },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "24h",
+        }
+      );
       const { password, ...rest } = user._doc;
       res
         .status(200)
@@ -125,9 +124,9 @@ export const google = async (req, res, next) => {
 export const cookieCheck = async (req, res, next) => {
   const token = req.cookies.access_token;
   if (!token) {
-   return res.status(200).json({ token: false });
+    return res.status(200).json({ token: false });
   }
   if (token) {
-   return res.status(200).json({ token: true });
+    return res.status(200).json({ token: true });
   }
 };

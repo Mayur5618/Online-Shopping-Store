@@ -30,7 +30,6 @@ export default function Google() {
                     photoURL:googleResult.user.photoURL
                 })
             });
-            console.log(googleResult);
             const data=await res.json();
 
             if(data)

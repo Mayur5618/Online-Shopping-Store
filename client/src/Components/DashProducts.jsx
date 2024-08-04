@@ -20,7 +20,6 @@ export default function DashProducts() {
         if (!data.products) {
           setNoMoreMesj(true);
         }
-        // console.log(data.tota);
         if (res.ok) {
           setProducts(data.products);
           if (data.products.length === 9) {

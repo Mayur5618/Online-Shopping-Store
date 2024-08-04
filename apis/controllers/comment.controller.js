@@ -3,14 +3,14 @@ import { errorHandler } from "../utillitis/errorHandler.js";
 
 export const create = async (req, res, next) => {
   const { productId } = req.params;
-  const { content,star } = req.body;
-  
+  const { content, star } = req.body;
+
   try {
     const newComment = new commentModel({
       productId,
       userId: req.user.id,
       content,
-      star
+      star,
     });
     const data = await newComment.save();
     if (data) {
@@ -22,13 +22,11 @@ export const create = async (req, res, next) => {
 };
 
 export const addLike = async (req, res, next) => {
-  // const userId=![req.user.id] ? 
   try {
     const findComment = await commentModel.findById(req.params.commentId);
     if (!findComment) {
       res.status(404, "comment not found..");
     }
-    
 
     if (findComment.likes.indexOf(req.user.id) === -1) {
       findComment.likes.push(req.user.id);
@@ -45,9 +43,7 @@ export const addLike = async (req, res, next) => {
 };
 
 export const getProductComments = async (req, res, next) => {
-  
   try {
-    // const token = req.cookies.access_token;
     const { productId } = req.params;
 
     const fetchedComments = await commentModel
@@ -57,38 +53,15 @@ export const getProductComments = async (req, res, next) => {
     if (fetchedComments.length === 0) {
       return res.status(200).json("There are no comments yet!");
     }
-      return res.status(200).json(fetchedComments);
-
-    // if (!token) {
-    //   return res.status(200).json(fetchedComments);
-    // }
-
-    // jwt.verify(token, "mayur", async (err, user) => {
-    //   if (err) {
-    //     return next(errorHandler(401, "Unauthorized"));
-    //   }
-
-    //   req.user = user;
-
-    //   let userComments = fetchedComments.filter((com)=>com.userId===req.user.id);
-    //   let commentIds = userComments.map((e) => e._id.toString());
-
-    //   const notUserComments = fetchedComments.filter(
-    //     (e) => !commentIds.includes(e._id.toString())
-    //     // _id.toString :~ if we set _id manually than it is string than we dont need to use toString(typeof(commentIds[0]) is String),but if we dont set it then mongodb provide it automatically than it is object(typeof(commentIds[0]) is Object) so it comaprizon doesnt happend
-    //   );
-
-    //   const combinedComments = [...userComments, ...notUserComments];
-    //   res.status(200).json(combinedComments);
-    // });
+    return res.status(200).json(fetchedComments);
   } catch (error) {
-    next(error); // Pass any caught error to the error handler
+    next(error);
   }
 };
 
 export const edit = async (req, res, next) => {
   const { commentId } = req.params;
-  const { content ,star} = req.body;
+  const { content, star } = req.body;
 
   const fetchComment = await commentModel.findById({ _id: commentId });
   if (!fetchComment) {
@@ -105,7 +78,7 @@ export const edit = async (req, res, next) => {
       {
         $set: {
           content,
-          star
+          star,
         },
       },
       { new: true }

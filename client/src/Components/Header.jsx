@@ -33,7 +33,6 @@ export default function Header() {
       const data = await res.json();
       if (!res.ok) {
         dispatch(cartSetUp(0));
-        console.log("off");
         return;
       }
       dispatch(cartSetUp(data.totalCartItems));

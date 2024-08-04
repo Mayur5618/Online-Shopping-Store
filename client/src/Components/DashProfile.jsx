@@ -34,9 +34,9 @@ export default function DashProfile() {
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [alertVisible, setAlertVisible] = useState(false);
-  const [showModal,setShowModal]=useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [tokenExist, setTokenExist] = useState(null);
-  const [modalAction, setModalAction] = useState(null); 
+  const [modalAction, setModalAction] = useState(null);
 
   useEffect(() => {
     const checkToken = async () => {
@@ -59,8 +59,8 @@ export default function DashProfile() {
         setAlertVisible(false);
         setSuccessMessage(null);
         setErrorMessage(null);
-      }, 5000);
-      return () => clearTimeout(timer); // Cleanup the timer on component unmount
+      }, 3000);
+      return () => clearTimeout(timer);
     }
   }, [successMessage, errorMessage]);
 
@@ -70,7 +70,7 @@ export default function DashProfile() {
       if (file.size <= 2 * 1024 * 1024) {
         setImageFile(file);
         setImageFileUrl(URL.createObjectURL(file));
-        setImageFileUploadError(null); // Clear any previous error
+        setImageFileUploadError(null);
       } else {
         setImageFile(null);
         setImageFileUploadError("File size must be less than 2MB");
@@ -86,24 +86,9 @@ export default function DashProfile() {
 
   const uploadImg = () => {
     const storage = getStorage(app);
-    // here, we create its new object for image uploading
     const filename = new Date().getTime() + imageFile.name;
-    // here, we create a unique name for each image
     const storageRef = ref(storage, filename);
-    // here, we create reference(pointer) so that we can have the memory address of img so that we can chage it directly,if we dont use reference that if we change image than it display img but not chnage in firebase,so we have its refererence so that we can upload it,download,update,delete it ddirectly
-    // storageRef is like a address that helps us find and manage our image file in firebase storage
-    // it creates a link <a>1719395991705WIN_20240218_16_59_38_Pro.jpg</a> that specify loaction of image 
     const uploadTask = uploadBytesResumable(storageRef, imageFile);
-    // here, we use uploadBytesResumable because whenever we send req,res than data is transffered in bytes(smallest part of data ,in packets(chunks)) becuase img size is in MB so when we post img than it takes long time so we send our img in bytes packets and each bytes send in correct order for this firebase works here,
-    // 1 byte=8 bits
-    // 1 bit=0 or 1 (0,1)
-    // 2 bit=00,01,10,11 ....
-    // there is another method also named uploadBytes ,it is for small size file ,uploadBytesResumable is helpful to know that how much bytes are transffered out of total bytes .it provides two attribute named bytesTransferred,totalBytes to know progress and it also does that if our internet is slow than img resume and when internet speed becomes good than does not download from starting ,it starts form resume(jyathi baaki che,this feacture is not in uploadBytes ,it download from starting..)
-
-    // 'state_changed'-->event name
-    // snapshot -->is a simple obj that represent current state
-    // toFixed -->is method to remove 1.0909 -->1
-    // getDownloadURL-->to get publicly accessible URL of image and it returns promise
 
     uploadTask.on(
       "state_changed",
@@ -121,7 +106,6 @@ export default function DashProfile() {
           setImageFileUploadProgress(null);
           setFormData({ ...formData, photoUrl: downloadURL });
           setSuccessMessage("Image uploaded successfully...");
-          // filePickerRef.current.value = null;
         });
       }
     );
@@ -131,14 +115,12 @@ export default function DashProfile() {
     e.preventDefault();
 
     if (Object.keys(formData).length === 0) {
-      // console.log(Object.keys(formData)); //formdata is a object so to check that it is empty or not ,we want to use Global Object(O capital) function and its sub function named keys(object_name) so its returns number of keys./***/if we store data in array than we can directly use of if(formdata.length===0),if userdata is a string if(formdata.length===" "),if userdata is null or undifine if(!userdata) or we can use !formdata.email
       setErrorMessage("No changes made");
       return;
     }
 
-    if(formData.password.toString().length===0)
-    {
-      setErrorMessage("No changes made");
+    if (formData.password.length === 0) {
+      setErrorMessage("Password length must be at least 6 characters.");
       return;
     }
 
@@ -152,7 +134,6 @@ export default function DashProfile() {
 
       const data = await res.json();
       if (!res.ok) {
-        // Handle error responses
         setErrorMessage(data.message || "An error occurred");
         dispatch(UpdateUserFailure(data));
       } else {
@@ -163,9 +144,9 @@ export default function DashProfile() {
       dispatch(UpdateUserFailure(error));
     }
   };
-  console.log(formData);
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
+    console.log(formData.password.length);
   };
 
   const handleSignout = async () => {
@@ -228,11 +209,9 @@ export default function DashProfile() {
                   top: "0",
                   left: "0",
                 },
-                // root: Defines how the entire progress bar component is positioned and sized relative to its parent container
                 path: {
                   stroke: `rgba(62,152,199,${imageFileUploadProgress / 100})`,
                 },
-                // path: This style object applies specifically to the circular path that represents the progress of the bar. Defines the visual appearance of the circular path itself, particularly the stroke color
               }}
             />
           )}
@@ -265,7 +244,7 @@ export default function DashProfile() {
         />
         <TextInput
           type="password"
-          placeholder="Password"
+          placeholder="New password"
           id="password"
           onChange={handleChange}
         />
@@ -287,7 +266,12 @@ export default function DashProfile() {
         </Button>
         {tokenExist && userData && userData.isAdmin ? (
           <Link to="/create-product">
-            <Button type="button" className="w-full" gradientDuoTone="purpleToPink" outline>
+            <Button
+              type="button"
+              className="w-full"
+              gradientDuoTone="purpleToPink"
+              outline
+            >
               Create Product
             </Button>
           </Link>
@@ -296,10 +280,16 @@ export default function DashProfile() {
         )}
       </form>
       <div className="flex justify-between mt-3 text-red-500">
-        <span className="cursor-pointer" onClick={() =>openModalForAction('delete')}>
+        <span
+          className="cursor-pointer"
+          onClick={() => openModalForAction("delete")}
+        >
           Delete Account
         </span>
-        <span className="cursor-pointer" onClick={() => openModalForAction('signout')}>
+        <span
+          className="cursor-pointer"
+          onClick={() => openModalForAction("signout")}
+        >
           Sign out
         </span>
       </div>
@@ -324,26 +314,25 @@ export default function DashProfile() {
           <div className="text-center">
             <HiOutlineExclamationCircle className="text-4xl mx-auto text-red-500" />
             <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-              {modalAction === 'delete'
-                ? 'Are you sure you want to delete your account?'
-                : 'Are you sure you want to sign out?'}
+              {modalAction === "delete"
+                ? "Are you sure you want to delete your account?"
+                : "Are you sure you want to sign out?"}
             </h3>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              {modalAction === 'delete'
-                ? 'This action cannot be undone.'
-                : 'You will be redirected to the sign-in page.'}
+              {modalAction === "delete"
+                ? "This action cannot be undone."
+                : "You will be redirected to the sign-in page."}
             </p>
             <div className="flex justify-center gap-4 mt-4">
               <Button
                 color="failure"
-                onClick={modalAction === 'delete' ? handleDeleteAcc : handleSignout}
+                onClick={
+                  modalAction === "delete" ? handleDeleteAcc : handleSignout
+                }
               >
-                {modalAction === 'delete' ? 'Yes, Delete' : 'Yes, Sign Out'}
+                {modalAction === "delete" ? "Yes, Delete" : "Yes, Sign Out"}
               </Button>
-              <Button
-                color="gray"
-                onClick={() => setShowModal(false)}
-              >
+              <Button color="gray" onClick={() => setShowModal(false)}>
                 Cancel
               </Button>
             </div>

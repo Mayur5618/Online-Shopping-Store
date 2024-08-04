@@ -17,16 +17,6 @@ export default function Dashboard() {
     setTab(tabFromUrl);
   },[location]);
 
-  // useEffect(()=>{
-  //   const checkToken=async()=>{
-  //     const token=await fetch("/api/auth/cookie");
-  //     if(!token)
-  //     {
-  //       console.log(token);
-  //     }
-  //   }
-  // },[]);
-  
   return (
     <div className='flex flex-col md:flex-row '>
       <div className=" md:min-h-screen ">

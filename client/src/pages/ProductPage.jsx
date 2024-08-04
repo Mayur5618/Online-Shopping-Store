@@ -18,11 +18,11 @@ export default function ProductPage() {
 
   useEffect(() => {
     if (unknown) {
-      const timer = setInterval(() => {
+      const timer = setTimeout(() => {
         setUnknown(false);
       }, 3000);
 
-      return () => clearInterval(timer);
+      return () => clearTimeout(timer);
     }
   }, [unknown]);
 
@@ -41,7 +41,11 @@ export default function ProductPage() {
   };
 
   useEffect(() => {
-    fetchCartItems();
+
+     if(userData)
+    {
+      fetchCartItems();
+    }
   }, []);
 
   const formatPrice = (price) => {
@@ -60,7 +64,7 @@ export default function ProductPage() {
           setProductData(data);
         }
       } catch (error) {
-        console.log(error.message);
+        console.log(error);
       } finally {
         setLoading(false);
       }
@@ -111,7 +115,7 @@ export default function ProductPage() {
       if (res.ok) {
         await res.json();
         dispatch(cartAdd());
-        fetchCartItems(); // Fetch cart items again to update the cart state
+        fetchCartItems(); 
       }
     } catch (error) {
       console.log(error);
@@ -124,7 +128,7 @@ export default function ProductPage() {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row relative">
+      <div className="flex flex-col lg:flex-row relative">
         <div className="flex-1">
           <div className="flex min-w-[50%] p-6 rounded-md">
             <img
@@ -134,8 +138,8 @@ export default function ProductPage() {
             />
           </div>
         </div>
-        <div className="flex-1 p-3">
-          <h5 className="text-3xl mt-5 p-3 font-medium text-black dark:text-white lg:text-4xl">
+        <div className="flex-1 p-3 mx-auto lg:mx-0">
+          <h5 className="text-2xl text-center lg:text-left mt-5 p-3 font-medium text-black dark:text-white lg:text-4xl">
             {productData && productData.title}
           </h5>
           <div className="flex justify-between border-b border-slate-500 w-full max-w-2xl text-xs"></div>
@@ -162,18 +166,27 @@ export default function ProductPage() {
                 </Button>
               </Link>
             ) : (
-              <Link to="/cart">
+              userData ? (
+                <Link to="/cart">
+                  <Button
+                    gradientDuoTone="purpleToBlue"
+                    outline
+                    className="mx-auto w-[90%]"
+                    onClick={() => addToCart(productData._id)}
+                  >
+                    Add to cart
+                  </Button>
+                </Link>
+              ) : (
                 <Button
                   gradientDuoTone="purpleToBlue"
                   outline
                   className="mx-auto w-[90%]"
-                  onClick={() => {
-                    addToCart(productData._id);
-                  }}
+                  onClick={() => setUnknown(true)}
                 >
                   Add to cart
                 </Button>
-              </Link>
+              )
             )}
             <Button
               gradientDuoTone="greenToBlue"
@@ -199,7 +212,7 @@ export default function ProductPage() {
         <h1 className="mt-5 mb-5 flex justify-center items-center text-2xl font-sans">
           See similar products
         </h1>
-        <div className="flex gap-3 flex-wrap p-3 sm:p-0 mb-5">
+        <div className="flex gap-3 flex-wrap p-2 sm:p-0 mb-5">
           {recentProducts &&
             recentProducts.map((product) => (
               <ProductCard key={product._id} product={product} />

@@ -84,7 +84,6 @@ export default function CreateProduct() {
 
   const handleForm = async (e) => {
     e.preventDefault();
-    console.log(formData);
     if (Object.keys(formData).length === 0) {
       setErrorMessage("No changes made");
       return;

@@ -9,7 +9,7 @@ export default function DashComments() {
   const [comments, setComments] = useState([]);
   const [showMore, setShowMore] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [deleteCommentID,setDeleteCommentID]=useState(null);
+  const [deleteCommentID, setDeleteCommentID] = useState(null);
 
   useEffect(() => {
     const comments = async () => {
@@ -30,7 +30,6 @@ export default function DashComments() {
       comments();
     }
   }, [userData._id]);
-  // console.log();
   const handleShowMore = async () => {
     const startIndex = comments.length;
     try {
@@ -70,15 +69,6 @@ export default function DashComments() {
     }
   };
 
-//   const findProductImageAndName=async(productId)=>{
-//     const res=await fetch(`/api/product/getProducts?productId=${productId}`);
-//     if(res.ok)
-//     {
-//         const data=await res.json();
-//         const productData=data.products;
-//         setProductData(productData);
-//     }
-//   }
   return (
     <div className="md:mx-auto overflow-x-auto table-auto p-3">
       <Table hoverable className="shadow-md">
@@ -94,9 +84,11 @@ export default function DashComments() {
         </Table.Head>
         <Table.Body className="divide-y">
           {comments &&
-            comments.map((comment) => 
-            (
-              <Table.Row key={comment._id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+            comments.map((comment) => (
+              <Table.Row
+                key={comment._id}
+                className="bg-white dark:border-gray-700 dark:bg-gray-800"
+              >
                 <Table.Cell>
                   {new Date(comment.updatedAt).toLocaleDateString()}
                 </Table.Cell>
@@ -109,19 +101,17 @@ export default function DashComments() {
                   }
                 </Table.Cell>
                 <Table.Cell>
-                <div className="stars flex p-4 space-x-1 ">
-                  {[...Array(5)].map((_, index) => (
-                    <span
-                      key={index}
-                    >
-                      {index < comment.star ? (
-                        <AiFillStar className="text-yellow-300 text-sm" />
-                      ) : (
-                        <AiOutlineStar color="gray" className="text-sm" />
-                      )}
-                    </span>
-                  ))}
-                </div>
+                  <div className="stars flex p-4 space-x-1 ">
+                    {[...Array(5)].map((_, index) => (
+                      <span key={index}>
+                        {index < comment.star ? (
+                          <AiFillStar className="text-yellow-300 text-sm" />
+                        ) : (
+                          <AiOutlineStar color="gray" className="text-sm" />
+                        )}
+                      </span>
+                    ))}
+                  </div>
                 </Table.Cell>
                 <Table.Cell>{comment.content}</Table.Cell>
                 <Table.Cell>{comment.numberOfLikes}</Table.Cell>
@@ -130,13 +120,15 @@ export default function DashComments() {
                 <Table.Cell>
                   <span
                     className="text-red-600 hover:underline cursor-pointer"
-                    onClick={() => {setShowModal(true),setDeleteCommentID(comment._id)}}
+                    onClick={() => {
+                      setShowModal(true), setDeleteCommentID(comment._id);
+                    }}
                   >
                     Delete
                   </span>
                 </Table.Cell>
               </Table.Row>
-            ) )}
+            ))}
         </Table.Body>
       </Table>
       {showMore ? (
@@ -165,7 +157,10 @@ export default function DashComments() {
               Are you sure you want to delete this user?
             </h3>
             <div className="flex justify-center gap-4">
-              <Button color="failure" onClick={() => handleDelete(deleteCommentID)}>
+              <Button
+                color="failure"
+                onClick={() => handleDelete(deleteCommentID)}
+              >
                 Yes, I'm sure
               </Button>
               <Button color="gray" onClick={() => setShowModal(false)}>

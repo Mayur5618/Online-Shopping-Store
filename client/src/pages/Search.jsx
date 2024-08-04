@@ -54,17 +54,23 @@ export default function Search() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     const urlParams = new URLSearchParams();
-    
-    window.innerWidth > 1024 ? urlParams.set("searchTerm",""):urlParams.set("searchTerm", searchData.searchTerm);
+
+    window.innerWidth > 1024
+      ? urlParams.set("searchTerm", "")
+      : urlParams.set("searchTerm", searchData.searchTerm);
     if (searchData.sort) urlParams.set("sort", searchData.sort);
     if (searchData.category) urlParams.set("category", searchData.category);
-    if (searchData.subCategory){
+    if (searchData.subCategory) {
       let result = searchData.subCategory
-      .split(' ')             
-      .map((word, index) =>index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-      ).join('');   ;
+        .split(" ")
+        .map((word, index) =>
+          index === 0
+            ? word
+            : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+        )
+        .join("");
       urlParams.set("subCategory", result);
     }
 
@@ -123,22 +129,30 @@ export default function Search() {
       <div className="md:min-h-screen p-7 border-b-[1px] border-gray-500">
         <form className="flex flex-col gap-7" onSubmit={handleSubmit}>
           <div className="lg:hidden sm:flex items-center gap-2">
-            <Label className="whitespace-nowrap font-medium text-md">Search Term:</Label>
+            <Label className="whitespace-nowrap font-medium text-md">
+              Search Term:
+            </Label>
             <TextInput
               id="searchTerm"
               placeholder="Search..."
               value={searchData.searchTerm}
-              onChange={(e) => setSearchData({ ...searchData, searchTerm: e.target.value })}
+              onChange={(e) =>
+                setSearchData({ ...searchData, searchTerm: e.target.value })
+              }
             />
           </div>
-          
+
           <div className="flex items-center gap-2">
             <Label className="font-medium text-md">Category:</Label>
             <Select
               id="category"
               value={searchData.category}
               onChange={(e) =>
-                setSearchData({ ...searchData, category: e.target.value, subCategory: ""})
+                setSearchData({
+                  ...searchData,
+                  category: e.target.value,
+                  subCategory: "",
+                })
               }
             >
               <option value="">Select category</option>
@@ -167,19 +181,21 @@ export default function Search() {
               <Label className="font-medium text-md">Sub-Type:</Label>
               <Select
                 id="subCategory"
-                onChange={(e) =>{
-                  const selectedValue= e.target.value.toLowerCase();
+                onChange={(e) => {
+                  const selectedValue = e.target.value.toLowerCase();
                   setSearchData({
                     ...searchData,
-                    subCategory:selectedValue,
+                    subCategory: selectedValue,
                   });
-                }
-                }
+                }}
                 value={searchData.subCategory}
               >
                 <option value="">Sub-type</option>
                 {getSubCategories().map((subCategory) => (
-                  <option key={subCategory.toLowerCase()} value={subCategory.toLowerCase()}>
+                  <option
+                    key={subCategory.toLowerCase()}
+                    value={subCategory.toLowerCase()}
+                  >
                     {subCategory}
                   </option>
                 ))}

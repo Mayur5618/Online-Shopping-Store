@@ -91,9 +91,7 @@ export default function DashboardCompass() {
         <div className="flex flex-col p-3 dark:bg-slate-800 gap-4 md:w-72 w-full rounded-md shadow-md">
           <div className="flex justify-between">
             <div className="">
-              <h3 className="text-gray-500 text-md uppercase">
-                Total Reviews
-              </h3>
+              <h3 className="text-gray-500 text-md uppercase">Total Reviews</h3>
               <p className="text-2xl">{totalComments}</p>
             </div>
             <HiAnnotation className="bg-indigo-600  text-white rounded-full text-5xl p-3 shadow-lg" />
@@ -109,7 +107,9 @@ export default function DashboardCompass() {
         <div className="flex flex-col p-3 dark:bg-slate-800 gap-4 md:w-72 w-full rounded-md shadow-md">
           <div className="flex justify-between">
             <div className="">
-              <h3 className="text-gray-500 text-md uppercase">Total Products</h3>
+              <h3 className="text-gray-500 text-md uppercase">
+                Total Products
+              </h3>
               <p className="text-2xl">{totalProducts}</p>
             </div>
             <HiDocumentText className="bg-lime-600  text-white rounded-full text-5xl p-3 shadow-lg" />

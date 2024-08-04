@@ -13,7 +13,8 @@ const productSchema = new mongoose.Schema(
     },
     productPhotoUrl: {
       type: String,
-      default:"https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2021/09/how-to-write-a-blog-post.png",
+      default:
+        "https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2021/09/how-to-write-a-blog-post.png",
     },
     slug: {
       type: String,
@@ -23,20 +24,20 @@ const productSchema = new mongoose.Schema(
     category: {
       type: String,
       default: "uncategorized",
-      required:"true"
+      required: "true",
     },
     subCategory: {
       type: String,
       default: "uncategorized",
     },
-    price:{
-      type:String,
-      required:true
-    }
+    price: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
 
-const productModel=mongoose.model("Products",productSchema);
+const productModel = mongoose.model("Products", productSchema);
 
 export default productModel;

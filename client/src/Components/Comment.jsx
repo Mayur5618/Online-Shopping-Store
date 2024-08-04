@@ -18,7 +18,7 @@ export default function Comment({
   const [showInput, setShowInput] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [rating, setRating] = useState(comment.star);
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
 
   const handleClick = (index) => {
     setRating(index + 1);

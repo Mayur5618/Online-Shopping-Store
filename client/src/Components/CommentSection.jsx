@@ -11,8 +11,7 @@ export default function CommentSection({ productInfo }) {
   const [commentMessage, setCommentMessage] = useState(null);
   const [unknown, setUnknown] = useState(false);
   const [rating, setRating] = useState(0);
-  const [message,setMessage]=useState(null);
-  const [alertVisible,setAlertVisible]=useState(false);
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     if (message) {
@@ -25,7 +24,7 @@ export default function CommentSection({ productInfo }) {
   }, [message]);
 
   const handleClick = (index) => {
-    setRating(index + 1); 
+    setRating(index + 1);
   };
 
   useEffect(() => {
@@ -51,7 +50,6 @@ export default function CommentSection({ productInfo }) {
     }
   }, [productInfo]);
 
-  
   useEffect(() => {
     if (unknown) {
       setUnknown(true);
@@ -70,8 +68,7 @@ export default function CommentSection({ productInfo }) {
       setComment("");
       return;
     }
-    if(!comment && rating==0)
-    {
+    if (!comment && rating == 0) {
       setMessage("Plaese fillout review..");
       return;
     }
@@ -79,7 +76,7 @@ export default function CommentSection({ productInfo }) {
       setMessage("please write something..");
       return;
     }
-    if(rating===0){
+    if (rating === 0) {
       setMessage("please provide stars..");
       return;
     }
@@ -87,7 +84,7 @@ export default function CommentSection({ productInfo }) {
       const res = await fetch(`/api/comment/create/${productInfo._id}`, {
         method: "Post",
         headers: { "Content-type": "application/json" },
-        body: JSON.stringify({ content: comment,star:rating}),
+        body: JSON.stringify({ content: comment, star: rating }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -152,7 +149,7 @@ export default function CommentSection({ productInfo }) {
   return (
     <>
       {userData && userData.username && (
-        <div className="ml-3 md:ml-0 mb-1">
+        <div className="ml-3 xl:ml-0 mb-1">
           <div className="flex gap-2">
             <p>@{userData.username}</p>
             <img
@@ -164,25 +161,25 @@ export default function CommentSection({ productInfo }) {
         </div>
       )}
       <form
-        className="mt-4 mb-3 p-6 rounded-md border border-cyan-500 m-3 md:m-0"
+        className="mt-4 mb-3 p-6 rounded-md border border-cyan-500 m-3 xl:m-0"
         onSubmit={handleSubmit}
       >
         <div>
           <div className="stars flex space-x-2 p-5 justify-center">
-              {[...Array(5)].map((_, index) => (
-                <span
-                  key={index}
-                  onClick={() => handleClick(index)}
-                  style={{ cursor: "pointer", fontSize: "24px" }} // Adjust the size of the stars
-                >
-                  {index < rating ? (
-                    <AiFillStar className="text-yellow-300 text-4xl" />
-                  ) : (
-                    <AiOutlineStar color="gray" className="text-4xl"/>
-                  )}
-                </span>
-              ))}
-            </div>
+            {[...Array(5)].map((_, index) => (
+              <span
+                key={index}
+                onClick={() => handleClick(index)}
+                style={{ cursor: "pointer", fontSize: "24px" }}
+              >
+                {index < rating ? (
+                  <AiFillStar className="text-yellow-300 text-4xl" />
+                ) : (
+                  <AiOutlineStar color="gray" className="text-4xl" />
+                )}
+              </span>
+            ))}
+          </div>
           <Textarea
             cols="10"
             rows="3"
@@ -201,8 +198,16 @@ export default function CommentSection({ productInfo }) {
           </Button>
         </div>
       </form>
-      {message && <Alert color="failure" className="mt-3">{message}</Alert>}
-      {unknown && <Alert color="failure" className="mt-3">Please sign-in</Alert>}
+      {message && (
+        <Alert color="failure" className="mt-3">
+          {message}
+        </Alert>
+      )}
+      {unknown && (
+        <Alert color="failure" className="mt-3 md:w-full w-[90%] mx-auto">
+          Please sign-in
+        </Alert>
+      )}
       {comments &&
         comments.map((comment) => (
           <Comment
