@@ -53,16 +53,18 @@ export default function DashProfile() {
   }, []);
 
   useEffect(() => {
-    if (errorMessage || successMessage) {
+    if (errorMessage || successMessage || imageFileUploadError) {
+      
       setAlertVisible(true);
       const timer = setTimeout(() => {
         setAlertVisible(false);
         setSuccessMessage(null);
         setErrorMessage(null);
+        setImageFileUploadError(null);
       }, 3000);
       return () => clearTimeout(timer);
     }
-  }, [successMessage, errorMessage]);
+  }, [errorMessage,successMessage,imageFileUploadError]);
 
   const handleImage = (e) => {
     const file = e.target.files[0];
@@ -119,7 +121,7 @@ export default function DashProfile() {
       return;
     }
 
-    if (formData.password.length === 0) {
+    if (formData.password && formData.password.length === 0) {
       setErrorMessage("Password length must be at least 6 characters.");
       return;
     }
@@ -144,6 +146,7 @@ export default function DashProfile() {
       dispatch(UpdateUserFailure(error));
     }
   };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
     console.log(formData.password.length);
@@ -225,7 +228,7 @@ export default function DashProfile() {
             onClick={() => filePickerRef.current.click()}
           />
         </div>
-        {alertVisible && imageFileUploadError && (
+        {imageFileUploadError && (
           <Alert color="failure">{imageFileUploadError}</Alert>
         )}
         <TextInput
@@ -241,6 +244,7 @@ export default function DashProfile() {
           defaultValue={userData.email}
           id="email"
           onChange={handleChange}
+          readOnly
         />
         <TextInput
           type="password"

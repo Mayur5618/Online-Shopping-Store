@@ -199,7 +199,7 @@ export default function CommentSection({ productInfo }) {
         </div>
       </form>
       {message && (
-        <Alert color="failure" className="mt-3">
+        <Alert color="failure" className="mt-3 mx-2 lg:mx-0">
           {message}
         </Alert>
       )}
