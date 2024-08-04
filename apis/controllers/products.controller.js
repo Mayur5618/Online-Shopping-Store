@@ -46,7 +46,8 @@ export const getProducts = async (req, res, next) => {
       ...(req.query.searchTerm && {
         $or: [
           { category: { $regex: req.query.searchTerm, $options: "i" } },
-          { subCategory: { $regex: req.query.searchTerm, $options: "i" } },
+          { subCategory: { $regex: req.query.searchTerm, $options: "i" }},
+          { slug: { $regex: req.query.searchTerm, $options: "i" }},
         ],
       }),
     })
