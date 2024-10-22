@@ -7,7 +7,7 @@ import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 export default function DashComments() {
   const { userData } = useSelector((state) => state.user);
   const [comments, setComments] = useState([]);
-  const [showMore, setShowMore] = useState(false);
+  const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [deleteCommentID, setDeleteCommentID] = useState(null);
 
@@ -140,7 +140,7 @@ export default function DashComments() {
         </button>
       ) : (
         <p className="w-full text-center text-slate-500 text-sm py-1">
-          You have not product yet!
+          You have not comment yet!
         </p>
       )}
       <Modal

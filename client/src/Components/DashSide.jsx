@@ -1,6 +1,9 @@
 import { Sidebar } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { HiChartPie, HiUser, HiDocumentText } from "react-icons/hi";
+import { HiChartPie, HiUser } from "react-icons/hi";
+import { BsShop } from "react-icons/bs";
+import { FiBarChart2} from "react-icons/fi";
+import { FaUsers} from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -75,21 +78,21 @@ export default function DashSide() {
                 </Sidebar.Item>
                 <Sidebar.Item
                   active={tab === "products"}
-                  icon={HiDocumentText}
+                  icon={BsShop}
                   as="div"
                 >
                   <Link to={"/dashboard?tab=products"}>Products</Link>
                 </Sidebar.Item>
                 <Sidebar.Item
                   active={tab === "comments"}
-                  icon={HiDocumentText}
+                  icon={FiBarChart2}
                   as="div"
                 >
                   <Link to={"/dashboard?tab=comments"}>Reviews</Link>
                 </Sidebar.Item>
                 <Sidebar.Item
                   active={tab === "users"}
-                  icon={HiDocumentText}
+                  icon={FaUsers}
                   as="div"
                 >
                   <Link to={"/dashboard?tab=users"}>Users</Link>

@@ -68,8 +68,14 @@ export default function Header() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate(`/search?searchTerm=${headerSearch}`);
+  
+    const formattedSearchTerm = headerSearch.trim().replace(/\s+/g, '-').toLowerCase();
+  
+    console.log(formattedSearchTerm);
+  
+    navigate(`/search?searchTerm=${formattedSearchTerm}`);
   };
+  
 
   useEffect(()=>{
     setHeaderSearch("");

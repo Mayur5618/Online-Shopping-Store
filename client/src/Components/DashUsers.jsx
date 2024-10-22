@@ -37,9 +37,9 @@ export default function DashUsers() {
     try {
       const res = await fetch(`/api/user/getUsers?startIndex=${startIndex}`);
       const data = await res.json();
-      if (data) {
-        setUsers((prev) => [...prev, ...data]);
-        if (data.length < 9) {
+      if (data.filterUsersArr) {
+        setUsers((prev) => [...prev, ...data.filterUsersArr]);
+        if (data.filterUsersArr.length < 9) {
           setShowMore(false);
         }
       }
@@ -125,9 +125,12 @@ export default function DashUsers() {
           Show more
         </button>
       ) : (
-        <p className="w-full text-center text-slate-500 text-sm py-1">
-          You have not more users!
-        </p>
+        <button
+          className="w-full self-center text-teal-500 text-sm py-1"
+          onClick={handleShowMore}
+        >
+          Show more
+        </button>
       )}
       <Modal
         show={showModal}

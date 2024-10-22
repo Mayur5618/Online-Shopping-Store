@@ -7,7 +7,7 @@ import { HiOutlineExclamationCircle } from "react-icons/hi";
 export default function DashProducts() {
   const { userData } = useSelector((state) => state.user);
   const [products, setProducts] = useState([]);
-  const [showMore, setShowMore] = useState(false);
+  const [showMore, setShowMore] = useState(true);
   const [noMoreMesj, setNoMoreMesj] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [deleteProductId, setDeleteProductId] = useState(null);
@@ -44,7 +44,7 @@ export default function DashProducts() {
       const data = await res.json();
       if (data) {
         setProducts((prev) => [...prev, ...data.products]);
-        if (data.products.length < 9) {
+        if (data.products.length < 7) {
           setShowMore(false);
         }
       }
@@ -138,7 +138,7 @@ export default function DashProducts() {
       </Table>
       {showMore ? (
         <button
-          className="w-full self-center text-teal-500 text-sm py-1"
+          className="w-full self-center text-teal-500 text-sm py-3"
           onClick={handleShowMore}
         >
           Show more

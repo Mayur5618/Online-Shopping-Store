@@ -29,6 +29,12 @@ export default function Signup() {
       return setErrorMessage("Please fill all fields...");
     }
 
+    if (formData.password.length < 6)
+      {
+        
+        return setErrorMessage("Password length must be at least 6 characters.");
+    }
+
     try {
       setLoadding(true);
       setErrorMessage(null);
@@ -41,6 +47,14 @@ export default function Signup() {
       const data = await res.json();
       if (data.success === false) {
         setLoadding(false);
+        if (/E11000 duplicate key error collection: onlineShoppingStore\.users index: username_1/.test(data.message)) 
+        {
+          return setErrorMessage("Username already exists..");
+
+        }  
+        if (/E11000 duplicate key error collection: onlineShoppingStore\.users index: email_1/.test(data.message)) {
+          return setErrorMessage("Email already exists.");
+        }
         return setErrorMessage(data.message);
       }
       if (res.ok) {

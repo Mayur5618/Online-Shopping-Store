@@ -108,7 +108,7 @@ export const deleteComment = async (req, res, next) => {
 };
 
 export const getComments = async (req, res, next) => {
-  const limit = parseInt(req.query.limit) || 9;
+  const limit = parseInt(req.query.limit) || 7;
   const startIndex = parseInt(req.query.startIndex) || 0;
   const sortDirection = req.query.sort === "asc" ? 1 : -1;
   if (req.user.isAdmin) {

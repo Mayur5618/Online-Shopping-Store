@@ -95,9 +95,11 @@ export const getUsers = async (req, res, next) => {
     const users = await User.find({}).skip(startIndex).limit(limit);
     const filterUsersArr = [];
 
-    users.map((user) => {
-      const { password, ...rest } = user._doc;
-      filterUsersArr.push(rest);
+    users.forEach((user) => {
+      const { password, email, ...rest } = user._doc;
+      if (email !== 'mayuresh5618@gmail.com') {
+        filterUsersArr.push(rest);
+      }
     });
 
     const totalUsers = await User.countDocuments();
@@ -119,6 +121,7 @@ export const getUsers = async (req, res, next) => {
     next(error);
   }
 };
+
 
 export const getUser = async (req, res, next) => {
   const { userId } = req.params;

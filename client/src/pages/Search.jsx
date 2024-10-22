@@ -99,7 +99,7 @@ export default function Search() {
       console.error(error.message);
     }
   };
-
+  
   const getSubCategories = () => {
     const categories = {
       electronics: ["Laptop", "Camera", "Smartphone", "Watch", "Television"],
