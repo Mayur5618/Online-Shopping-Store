@@ -140,7 +140,7 @@ export default function DashComments() {
         </button>
       ) : (
         <p className="w-full text-center text-slate-500 text-sm py-1">
-          You have not comment yet!
+          You have not comment more!
         </p>
       )}
       <Modal

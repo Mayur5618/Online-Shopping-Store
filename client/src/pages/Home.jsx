@@ -57,19 +57,19 @@ export default function Home() {
       } else {
         setCarouselImages([
           {
-            src: "https://firebasestorage.googleapis.com/v0/b/online-shopping-store-d90c0.appspot.com/o/D103625178_DesktopTallHero_3000x1200_V3._CB558389732_.jpg?alt=media&token=c8a91150-29b5-481e-b5f5-d4287c6d6ffc",
+            src: "/pictures/p1.jpg",
             link: "/search?category=electronics&subCategory=smartphone",
           },
           {
-            src:"https://firebasestorage.googleapis.com/v0/b/online-shopping-store-d90c0.appspot.com/o/PC_Hero_1_3000._CB582457311_%5B1%5D.jpg?alt=media&token=4dd44002-9211-462d-862e-a41024288838",
+            src: "/pictures/p2.jpg",
             link: "/search?category=groceries&subCategory=dairy",
           },
           {
-            src:  "https://firebasestorage.googleapis.com/v0/b/online-shopping-store-d90c0.appspot.com/o/PC_hero_1_2x_1._CB582889946_.jpg?alt=media&token=a0a18f2b-eef0-4ebb-b819-751e80cfd97c",
+            src: "/pictures/p3.jpg",
             link: "/search?category=homeAndFurniture&subCategory=kitchenware",
           },
           {
-            src: "https://firebasestorage.googleapis.com/v0/b/online-shopping-store-d90c0.appspot.com/o/5300---Kitchen-hero---BAU---update_3000X1200._CB569213170_.jpg?alt=media&token=1e34fd70-a881-44f5-9b02-dc48528eef6d",
+            src: "/pictures/p4.jpg",
             link: "/search?category=groceries&subCategory=snacks",
           },
         ]);

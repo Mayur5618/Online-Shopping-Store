@@ -34,7 +34,7 @@ export const createProduct = async (req, res, next) => {
 
 export const getProducts = async (req, res, next) => {
   const startIndex = parseInt(req.query.startIndex) || 0;
-  const limit = parseInt(req.query.limit) || 7;
+  const limit = parseInt(req.query.limit) || 9;
   const sort = req.query.sort === "asc" ? 1 : -1;
 
   const products = await productModel

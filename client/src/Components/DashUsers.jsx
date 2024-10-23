@@ -39,7 +39,7 @@ export default function DashUsers() {
       const data = await res.json();
       if (data.filterUsersArr) {
         setUsers((prev) => [...prev, ...data.filterUsersArr]);
-        if (data.filterUsersArr.length < 9) {
+        if (data.filterUsersArr.length < 7) {
           setShowMore(false);
         }
       }
